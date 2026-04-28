@@ -16,10 +16,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { usn, dob } = req.body;
+    const { usn } = req.body;
 
-    if (!usn || !dob) {
-      return res.status(400).json({ error: 'USN and Date of Birth are required.' });
+    if (!usn) {
+      return res.status(400).json({ error: 'USN is required.' });
     }
 
     const apiKey = process.env.GOOGLE_SHEETS_API_KEY;
@@ -62,12 +62,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const searchUsn = usn.trim().toUpperCase();
-    const searchDob = dob.trim();
 
     const student = rows.slice(1).find(row => {
       const sheetUsn = (row[0] || '').toString().trim().toUpperCase();
-      const sheetDob = (row[2] || '').toString().trim(); 
-      return sheetUsn === searchUsn && sheetDob === searchDob;
+      return sheetUsn === searchUsn;
     });
 
     if (student) {
@@ -76,7 +74,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         pdfLink: student[3]
       });
     } else {
-      return res.status(404).json({ error: 'No certificate found for the provided details. Check USN and DOB.' });
+      return res.status(404).json({ error: 'No certificate found for the provided details. Check USN.' });
     }
 
   } catch (error: any) {

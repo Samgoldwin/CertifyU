@@ -20,10 +20,6 @@ export default function InfoModal({ isOpen, onClose, section }: InfoModalProps) 
           desc: 'Input your unique Student ID or USN exactly as it appears in your college records.'
         },
         {
-          title: 'Select Birth Date',
-          desc: 'Choose your correct date of birth. This acts as a secondary layer of identity verification.'
-        },
-        {
           title: 'Solve Anti-Bot Check',
           desc: 'A simple math problem ensures that requests are made by real students, protecting our bandwidth.'
         },
@@ -61,7 +57,7 @@ export default function InfoModal({ isOpen, onClose, section }: InfoModalProps) 
       points: [
         {
           title: 'Minimal Data Collection',
-          desc: 'We only require your ID and DOB to fulfill verification. No browsing history or device data is tracked.'
+          desc: 'We only require your ID to fulfill verification. No browsing history or device data is tracked.'
         },
         {
           title: 'Non-Persistent Sessions',

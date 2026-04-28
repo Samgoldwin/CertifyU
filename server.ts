@@ -20,10 +20,10 @@ async function startServer() {
 
   // API Route for verification
   app.post('/api/verify', async (req, res) => {
-    const { usn, dob } = req.body;
+    const { usn } = req.body;
 
-    if (!usn || !dob) {
-      return res.status(400).json({ error: 'USN and Date of Birth are required.' });
+    if (!usn) {
+      return res.status(400).json({ error: 'USN is required.' });
     }
 
     try {
@@ -65,12 +65,10 @@ async function startServer() {
       }
 
       const searchUsn = usn.trim().toUpperCase();
-      const searchDob = dob.trim();
 
       const student = rows.slice(1).find(row => {
         const sheetUsn = (row[0] || '').toString().trim().toUpperCase();
-        const sheetDob = (row[2] || '').toString().trim(); 
-        return sheetUsn === searchUsn && sheetDob === searchDob;
+        return sheetUsn === searchUsn;
       });
 
       if (student) {

@@ -15,7 +15,6 @@ interface CertificateData {
 
 export default function App() {
   const [usn, setUsn] = useState('');
-  const [dob, setDob] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [certificate, setCertificate] = useState<CertificateData | null>(null);
@@ -72,7 +71,7 @@ export default function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ usn: usn.trim(), dob }),
+        body: JSON.stringify({ usn: usn.trim() }),
       });
 
       let data;
@@ -92,7 +91,7 @@ export default function App() {
       if (!response.ok) {
         // Specific handling for common status codes
         if (response.status === 404) {
-          throw new Error('Check your details. No record matches that USN and DOB combo.');
+          throw new Error('Check your details. No record matches that USN.');
         } else if (response.status === 400) {
           throw new Error('Incomplete data. Please fill all fields correctly.');
         } else if (response.status === 500) {
@@ -204,24 +203,6 @@ export default function App() {
                     className="w-full bg-white border border-neutral-200 rounded-lg pl-9 pr-3 py-2.5 text-[14px] focus:outline-none focus:border-black focus:ring-[3px] focus:ring-black/5 transition-all placeholder:text-neutral-300 font-medium disabled:opacity-50"
                     value={usn}
                     onChange={(e) => setUsn(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label htmlFor="dob" className="text-[9px] font-black uppercase tracking-[0.1em] text-neutral-400 ml-0.5">
-                  Date of Birth
-                </label>
-                <div className="relative group">
-                  <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors pointer-events-none" />
-                  <input
-                    id="dob"
-                    type="date"
-                    required
-                    disabled={loading}
-                    className="w-full bg-white border border-neutral-200 rounded-lg pl-9 pr-3 py-2.5 text-[14px] focus:outline-none focus:border-black focus:ring-[3px] focus:ring-black/5 transition-all font-medium disabled:opacity-50"
-                    value={dob}
-                    onChange={(e) => setDob(e.target.value)}
                   />
                 </div>
               </div>
