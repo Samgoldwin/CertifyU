@@ -65,7 +65,19 @@ export default function App() {
         body: JSON.stringify({ usn: usn.trim(), dob }),
       });
 
-      const data = await response.json();
+      let data;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        // Handle non-JSON response (like 404 HTML page)
+        const text = await response.text();
+        console.error('Non-JSON response received:', text);
+        if (response.status === 404) {
+          throw new Error('Verification service endpoint not found (404). Please contact the administrator.');
+        }
+        throw new Error('Received an unexpected response from the server.');
+      }
 
       if (!response.ok) {
         // Specific handling for common status codes
