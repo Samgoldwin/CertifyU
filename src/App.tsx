@@ -393,6 +393,17 @@ export default function App() {
             </div>
             
             <div className="flex items-center gap-6 text-[9px] font-black uppercase tracking-widest text-neutral-400">
+              {import.meta.env.VITE_WEBSITE_URL && (
+                <a 
+                  href={import.meta.env.VITE_WEBSITE_URL} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-neutral-50 px-2 py-1 rounded border border-neutral-100 text-neutral-900 flex items-center gap-1 hover:border-neutral-900 transition-colors"
+                >
+                  <Search size={10} />
+                  Visit Website
+                </a>
+              )}
               <span className="hover:text-black transition-colors cursor-pointer">Security</span>
               <span className="hover:text-black transition-colors cursor-pointer">Privacy</span>
               <span className="hover:text-black transition-colors cursor-pointer">Support</span>
