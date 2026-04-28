@@ -132,17 +132,17 @@ export default function App() {
             <motion.h2 
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-3xl font-bold tracking-tight text-neutral-950"
+              className="text-4xl font-extrabold tracking-[-0.04em] text-neutral-950"
             >
-              Claim Your Creds.
+              Verify Instantly.
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="text-xs text-neutral-400 font-medium px-4 leading-relaxed"
+              className="text-[13px] text-neutral-400 font-medium px-6 leading-relaxed"
             >
-              The instant way to verify and download your certificates for hackathons, workshops, and participation.
+              The definitive portal for your hackathon wins, workshop certs, and event participations.
             </motion.p>
           </div>
 
@@ -158,33 +158,33 @@ export default function App() {
                 <label htmlFor="usn" className="text-[9px] font-black uppercase tracking-[0.1em] text-neutral-400 ml-0.5">
                   Identification (USN/ID)
                 </label>
-                <div className="relative">
-                  <User size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" />
+                <div className="relative group">
+                  <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors pointer-events-none" />
                   <input
                     id="usn"
                     type="text"
                     required
                     disabled={loading}
                     placeholder="e.g. 1RV17CS001"
-                    className="w-full bg-white border border-neutral-200 rounded-md pl-8 pr-3 py-2 text-[13px] focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all placeholder:text-neutral-300 font-medium disabled:opacity-50"
+                    className="w-full bg-white border border-neutral-200 rounded-lg pl-9 pr-3 py-2.5 text-[14px] focus:outline-none focus:border-black focus:ring-[3px] focus:ring-black/5 transition-all placeholder:text-neutral-300 font-medium disabled:opacity-50"
                     value={usn}
                     onChange={(e) => setUsn(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <label htmlFor="dob" className="text-[9px] font-black uppercase tracking-[0.1em] text-neutral-400 ml-0.5">
                   Date of Birth
                 </label>
-                <div className="relative">
-                  <Calendar size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" />
+                <div className="relative group">
+                  <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors pointer-events-none" />
                   <input
                     id="dob"
                     type="date"
                     required
                     disabled={loading}
-                    className="w-full bg-white border border-neutral-200 rounded-md pl-8 pr-3 py-2 text-[13px] focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all font-medium disabled:opacity-50"
+                    className="w-full bg-white border border-neutral-200 rounded-lg pl-9 pr-3 py-2.5 text-[14px] focus:outline-none focus:border-black focus:ring-[3px] focus:ring-black/5 transition-all font-medium disabled:opacity-50"
                     value={dob}
                     onChange={(e) => setDob(e.target.value)}
                   />
@@ -200,16 +200,16 @@ export default function App() {
                   <span className="text-[9px] font-bold text-neutral-300">Solve to continue</span>
                 </div>
                 <div className="flex gap-2">
-                  <div className="flex-1 h-9 bg-neutral-50 border border-neutral-100 rounded-md flex items-center justify-center font-mono text-xs font-bold text-neutral-500 tracking-wider">
-                    {captcha.num1} + {captcha.num2} = ?
+                  <div className="flex-1 h-10 bg-neutral-50 border border-neutral-100 rounded-lg flex items-center justify-center font-mono text-xs font-bold text-neutral-900 tracking-tighter">
+                    <span className="opacity-40 mr-1">MATH CHECK:</span> {captcha.num1} + {captcha.num2}
                   </div>
                   <input
                     id="captcha"
                     type="number"
                     required
                     disabled={loading}
-                    placeholder="Result"
-                    className="w-24 h-9 bg-white border border-neutral-200 rounded-md px-3 text-[13px] focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all font-medium disabled:opacity-50"
+                    placeholder="="
+                    className="w-20 h-10 bg-white border border-neutral-200 rounded-lg px-3 text-[14px] text-center focus:outline-none focus:border-black focus:ring-[3px] focus:ring-black/5 transition-all font-bold placeholder:text-neutral-200 disabled:opacity-50"
                     value={captchaInput}
                     onChange={(e) => setCaptchaInput(e.target.value)}
                   />
@@ -219,7 +219,7 @@ export default function App() {
               <button
                 type="submit"
                 disabled={loading}
-                className="relative overflow-hidden w-full h-9 bg-neutral-900 text-white rounded-md font-bold text-[11px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-neutral-800 transition-all active:scale-[0.98] disabled:opacity-50 mt-2 shadow-sm"
+                className="relative overflow-hidden w-full h-10 bg-neutral-950 text-white rounded-lg font-bold text-[12px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-[0.98] disabled:opacity-50 mt-4 shadow-sm"
               >
                 <span className={`flex items-center gap-2 transition-all duration-300 ${loading ? 'opacity-0 blur-sm translate-y-2' : 'opacity-100 translate-y-0'}`}>
                   <span>Verify Credentials</span>
@@ -377,18 +377,19 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-300">
-                Created with precision by
+              <div className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-300">
+                Crafted by
               </div>
-              <div className="flex items-center bg-black text-white px-2.5 py-1 rounded-md">
-                <span className="text-[10px] font-black tracking-widest uppercase">Rahul</span>
+              <div className="flex items-center gap-2 bg-neutral-50 border border-neutral-100 border-dashed px-3 py-1.5 rounded-full hover:border-neutral-900 transition-colors group cursor-default">
+                <div className="w-4 h-4 bg-black rounded-full flex items-center justify-center text-[8px] text-white font-black group-hover:scale-110 transition-transform">R</div>
+                <span className="text-[10px] font-black tracking-widest uppercase text-neutral-900">Rahul</span>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-neutral-50 gap-4">
             <div className="text-[9px] font-bold uppercase tracking-widest text-neutral-300">
-              &copy; {new Date().getFullYear()} Certification Systems Inc.
+              &copy; {new Date().getFullYear()} CertifyU Technologies.
             </div>
             
             <div className="flex items-center gap-6 text-[9px] font-black uppercase tracking-widest text-neutral-400">
