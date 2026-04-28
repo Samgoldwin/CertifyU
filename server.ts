@@ -11,8 +11,6 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { verifyCertificate } from './src/services/sheetsService';
-
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -29,18 +27,60 @@ async function startServer() {
     }
 
     try {
-      const result = await verifyCertificate(usn, dob);
+      const apiKey = process.env.GOOGLE_SHEETS_API_KEY;
+      const spreadsheetId = process.env.SPREADSHEET_ID;
+      const sheetName = process.env.SHEET_NAME || 'Certificates';
 
-      if (!result) {
-        return res.status(404).json({ error: 'No certificate found for the provided USN and Date of Birth. Please verify your details.' });
+      if (!apiKey || !spreadsheetId) {
+        return res.status(200).json({ 
+          error: 'Google Sheets integration is not configured yet. The administrator needs to set GOOGLE_SHEETS_API_KEY and SPREADSHEET_ID.',
+          configNeeded: true
+        });
       }
 
-      // Handle configNeeded case from service
-      if ('configNeeded' in result && result.configNeeded) {
-        return res.status(200).json(result);
+      const sheets = google.sheets({ version: 'v4', auth: apiKey });
+      
+      // Attempt to get spreadsheet metadata to list sheets
+      let targetSheetName = sheetName;
+      try {
+        const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId });
+        const sheetNames = spreadsheet.data.sheets?.map(s => s.properties?.title).filter(Boolean) as string[];
+        
+        if (!sheetNames.includes(targetSheetName)) {
+          const fallback = sheetNames.find(n => n.toLowerCase().includes('cert')) || sheetNames[0];
+          targetSheetName = fallback;
+        }
+      } catch (metaError) {
+        console.error('Metadata fetch failed:', metaError);
       }
 
-      return res.json(result);
+      const response = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: `${targetSheetName}!A:D`,
+      });
+
+      const rows = response.data.values;
+      if (!rows || rows.length <= 1) {
+        return res.status(404).json({ error: 'The certificate database appears to be empty.' });
+      }
+
+      const searchUsn = usn.trim().toUpperCase();
+      const searchDob = dob.trim();
+
+      const student = rows.slice(1).find(row => {
+        const sheetUsn = (row[0] || '').toString().trim().toUpperCase();
+        const sheetDob = (row[2] || '').toString().trim(); 
+        return sheetUsn === searchUsn && sheetDob === searchDob;
+      });
+
+      if (student) {
+        return res.json({
+          name: student[1],
+          pdfLink: student[3]
+        });
+      } else {
+        return res.status(404).json({ error: 'No certificate found for the provided details.' });
+      }
     } catch (error: any) {
       console.error('Sheets API Error:', error);
       
