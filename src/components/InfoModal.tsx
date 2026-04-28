@@ -66,6 +66,10 @@ export default function InfoModal({ isOpen, onClose, section }: InfoModalProps) 
         {
           title: 'No Third-Party Sharing',
           desc: 'Your data is strictly between you and the institution. We never sell or share student information with advertisers.'
+        },
+        {
+          title: 'The Attendance Loophole',
+          desc: 'Our system verifies your ID, not your seat. Even if you spent the entire semester in the cafeteria instead of the lecture hall, your certificate is safe here. We won\'t tell if you don\'t.'
         }
       ]
     }

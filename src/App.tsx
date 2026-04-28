@@ -49,8 +49,20 @@ export default function App() {
     e.preventDefault();
     
     // CAPTCHA Validation
+    const funnyMathErrors = [
+      "Wait, did you skip basic math class? 💀",
+      "Calculators exist for a reason, you know.",
+      "Even my cat could solve that math problem.",
+      "Are you a robot? Because a robot would have got that right.",
+      "My calculator is literally crying right now.",
+      "Math is hard, but that simple addition? Really?",
+      "Error: Intelligence not found. (Just kidding, try again!)",
+      "Are we doing common core or something? That's wrong."
+    ];
+
     if (parseInt(captchaInput) !== captcha.num1 + captcha.num2) {
-      setError('Anti-bot check failed. Try the math again.');
+      const msg = funnyMathErrors[Math.floor(Math.random() * funnyMathErrors.length)];
+      setError(msg);
       generateCaptcha();
       return;
     }
