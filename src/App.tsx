@@ -4,8 +4,9 @@
  */
 
 import { useState, FormEvent, useEffect, useCallback } from 'react';
-import { Download, GraduationCap, Calendar, User, Search, AlertCircle, CheckCircle2, ChevronRight, Loader2, ArrowRight } from 'lucide-react';
+import { Download, GraduationCap, Calendar, User, Search, AlertCircle, CheckCircle2, ChevronRight, Loader2, ArrowRight, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import InfoModal, { InfoSection } from './components/InfoModal';
 
 interface CertificateData {
   name: string;
@@ -19,6 +20,15 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [certificate, setCertificate] = useState<CertificateData | null>(null);
   const [configNeeded, setConfigNeeded] = useState(false);
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalSection, setModalSection] = useState<InfoSection>('guide');
+
+  const openModal = (section: InfoSection) => {
+    setModalSection(section);
+    setIsModalOpen(true);
+  };
   
   // CAPTCHA State
   const [captcha, setCaptcha] = useState({ num1: 0, num2: 0 });
@@ -121,10 +131,23 @@ export default function App() {
             <span className="font-bold text-sm tracking-tight">CertifyU</span>
           </div>
           <div className="flex items-center gap-5 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-            <span className="text-black transition-colors hover:text-black cursor-pointer">Verify</span>
+            <span 
+              onClick={() => openModal('guide')}
+              className="text-black transition-colors hover:text-black cursor-pointer flex items-center gap-1"
+            >
+              <HelpCircle size={10} />
+              Guide
+            </span>
             <span className="hover:text-black cursor-pointer transition-colors">API</span>
             <div className="h-3 w-px bg-neutral-200" />
-            <span className="hover:text-black cursor-pointer transition-colors">Support</span>
+            <a 
+              href="https://www.instagram.com/theonlyrahul.1/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-black cursor-pointer transition-colors"
+            >
+              Support
+            </a>
           </div>
         </div>
       </nav>
@@ -392,10 +415,15 @@ export default function App() {
               <div className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-300">
                 Crafted by
               </div>
-              <div className="flex items-center gap-2 bg-neutral-50 border border-neutral-100 border-dashed px-3 py-1.5 rounded-full hover:border-neutral-900 transition-colors group cursor-default">
+              <a 
+                href="https://www.instagram.com/theonlyrahul.1/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-neutral-50 border border-neutral-100 border-dashed px-3 py-1.5 rounded-full hover:border-neutral-900 transition-colors group cursor-pointer"
+              >
                 <div className="w-4 h-4 bg-black rounded-full flex items-center justify-center text-[8px] text-white font-black group-hover:scale-110 transition-transform">R</div>
                 <span className="text-[10px] font-black tracking-widest uppercase text-neutral-900">Rahul</span>
-              </div>
+              </a>
             </div>
           </div>
 
@@ -405,24 +433,26 @@ export default function App() {
             </div>
             
             <div className="flex items-center gap-6 text-[9px] font-black uppercase tracking-widest text-neutral-400">
-              {import.meta.env.VITE_WEBSITE_URL && (
-                <a 
-                  href={import.meta.env.VITE_WEBSITE_URL} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-neutral-50 px-2 py-1 rounded border border-neutral-100 text-neutral-900 flex items-center gap-1 hover:border-neutral-900 transition-colors"
-                >
-                  <Search size={10} />
-                  Visit Website
-                </a>
-              )}
-              <span className="hover:text-black transition-colors cursor-pointer">Security</span>
-              <span className="hover:text-black transition-colors cursor-pointer">Privacy</span>
-              <span className="hover:text-black transition-colors cursor-pointer">Support</span>
+              <button onClick={() => openModal('security')} className="hover:text-black transition-colors cursor-pointer">Security</button>
+              <button onClick={() => openModal('privacy')} className="hover:text-black transition-colors cursor-pointer">Privacy Policy</button>
+              <a 
+                href="https://www.instagram.com/theonlyrahul.1/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-black transition-colors flex items-center gap-1"
+              >
+                Support (Contact us directly)
+              </a>
             </div>
           </div>
         </div>
       </footer>
+
+      <InfoModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        section={modalSection} 
+      />
     </div>
 
   );
