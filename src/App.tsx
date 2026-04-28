@@ -262,6 +262,7 @@ export default function App() {
             <AnimatePresence mode="wait">
               {loading && (
                 <motion.div 
+                  key="loader"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -280,6 +281,7 @@ export default function App() {
 
               {!loading && error && (
                 <motion.div
+                  key="error"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
@@ -299,6 +301,7 @@ export default function App() {
 
               {!loading && certificate && (
                 <motion.div
+                  key="certificate"
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="mt-8 pt-8 border-t border-neutral-100 space-y-5"

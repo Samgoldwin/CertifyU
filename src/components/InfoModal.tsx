@@ -114,7 +114,7 @@ export default function InfoModal({ isOpen, onClose, section }: InfoModalProps) 
               <div className="p-6 max-h-[60vh] overflow-y-auto space-y-6">
                 {(active as any).steps ? (
                   (active as any).steps.map((step: any, i: number) => (
-                    <div key={i} className="flex gap-4">
+                    <div key={`${section}-step-${i}`} className="flex gap-4">
                       <div className="w-6 h-6 rounded-full bg-black text-white text-[10px] font-black flex items-center justify-center shrink-0">
                         {i + 1}
                       </div>
@@ -128,7 +128,7 @@ export default function InfoModal({ isOpen, onClose, section }: InfoModalProps) 
                   ))
                 ) : (
                   (active as any).points.map((point: any, i: number) => (
-                    <div key={i} className="flex gap-4">
+                    <div key={`${section}-point-${i}`} className="flex gap-4">
                       <div className="mt-0.5 text-neutral-900 shrink-0">
                         <CheckCircle2 size={14} />
                       </div>

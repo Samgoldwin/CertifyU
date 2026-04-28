@@ -56,7 +56,7 @@ async function startServer() {
 
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId,
-        range: `${targetSheetName}!A:D`,
+        range: `${targetSheetName}!A:Z`,
       });
 
       const rows = response.data.values;
@@ -64,17 +64,32 @@ async function startServer() {
         return res.status(404).json({ error: 'The certificate database appears to be empty.' });
       }
 
+      // Dynamic Column Discovery from Header Row
+      const headers = (rows[0] || []).map(h => (h || '').toString().toLowerCase().trim());
+      const usnIdx = headers.findIndex(h => h.includes('usn') || h.includes('id') || h.includes('roll'));
+      const nameIdx = headers.findIndex(h => h.includes('name') || h === 'student');
+      const linkIdx = headers.findIndex(h => h.includes('link') || h.includes('pdf') || h.includes('drive') || h.includes('url') || h.includes('certificate'));
+
+      // Fallback strategies
+      const fUsnIdx = usnIdx !== -1 ? usnIdx : 0;
+      const fNameIdx = nameIdx !== -1 ? nameIdx : 1;
+      const fLinkIdx = linkIdx !== -1 ? linkIdx : 3;
+
       const searchUsn = usn.trim().toUpperCase();
 
       const student = rows.slice(1).find(row => {
-        const sheetUsn = (row[0] || '').toString().trim().toUpperCase();
+        const sheetUsn = (row[fUsnIdx] || '').toString().trim().toUpperCase();
         return sheetUsn === searchUsn;
       });
 
       if (student) {
+        const pdfLink = student[fLinkIdx];
+        if (!pdfLink) {
+          return res.status(404).json({ error: 'Record found, but the certificate link is missing in the database.' });
+        }
         return res.json({
-          name: student[1],
-          pdfLink: student[3]
+          name: student[fNameIdx] || 'Student',
+          pdfLink: pdfLink
         });
       } else {
         return res.status(404).json({ error: 'No certificate found for the provided details.' });
